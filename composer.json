@@ -1,0 +1,22 @@
+{
+  "name": "phf0313/wechatmini-grade",
+  "description": "微信小程序基础功能，及交易组件功能",
+  "keywords": ["wechat","miniapp","wechat app"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "phf0313",
+      "email": "phf0313@qq.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1"
+
+  },
+
+  "autoload": {
+    "psr-4": {
+      "phf0313\\WechatMini\\": "src/"
+    }
+  }
+}
