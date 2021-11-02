@@ -3,6 +3,7 @@
 
 namespace Phf0313\WechatMini\Api;
 
+use Phf0313\WechatMini\Api\WeCache;
 
 class BaseApi
 {
@@ -16,7 +17,7 @@ class BaseApi
 	}
 
 	public function getAccessToken(){
-		$token = SimpleCache::get($this->appid.'_token',false);
+		$token = WeCache::get($this->appid.'_token',false);
 		if($token){
 			return $token;
 		}
@@ -32,7 +33,7 @@ class BaseApi
 			throw new \Exception($res['errcode'].':'.$res['errmsg'],$res['errcode']);
 		}
 
-		SimpleCache::set($this->appid.'_token',$res['access_token'],$res['expires_in']-200);
+        WeCache::set($this->appid.'_token',$res['access_token'],$res['expires_in']-200);
 		return $res['access_token'];
 	}
 

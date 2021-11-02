@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Jiawei
- * Date: 2017/7/29
- * Time: 10:04
- */
 
 namespace Phf0313\WechatMini;
 
@@ -13,6 +7,8 @@ use Phf0313\WechatMini\Api\QRCode;
 use Phf0313\WechatMini\Api\SessionKey;
 use Phf0313\WechatMini\Api\Statistic;
 use Phf0313\WechatMini\Api\TemplateMsg;
+
+use Phf0313\WechatMini\Api\WeCache;
 
 class WechatMini
 {
@@ -24,7 +20,7 @@ class WechatMini
 		$this->appid = $appid;
 		$this->secret = $secret;
 		$this->instance = [];
-		SimpleCache::init($token_cache_dir);
+		WeCache::init($token_cache_dir);
 	}
 
 	/**
