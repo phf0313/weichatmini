@@ -2,9 +2,11 @@
 
 namespace Phf0313\WechatMini;
 
+use Phf0313\WechatMini\Api\BaseApi;
 use Phf0313\WechatMini\Api\CustomMsg;
 use Phf0313\WechatMini\Api\QRCode;
 use Phf0313\WechatMini\Api\SessionKey;
+use Phf0313\WechatMini\Api\Shop;
 use Phf0313\WechatMini\Api\Statistic;
 use Phf0313\WechatMini\Api\TemplateMsg;
 
@@ -20,7 +22,7 @@ class WechatMini
 		$this->appid = $appid;
 		$this->secret = $secret;
 		$this->instance = [];
-		WeCache::init($token_cache_dir);
+        WeCache::init($token_cache_dir);
 	}
 
 	/**
@@ -37,7 +39,7 @@ class WechatMini
 	/**
 	 * @return TemplateMsg 模板消息对象
 	 */
-	public function getTemplateMsg(){
+	public function TemplateMsg(){
 		if(!isset($this->instance['template'])){
 			$this->instance['template'] = new TemplateMsg($this->appid,$this->secret);
 		}
@@ -47,7 +49,7 @@ class WechatMini
 	/**
 	 * @return QRCode 二维码对象
 	 */
-	public function getQRCode(){
+	public function QRCode(){
 		if(!isset($this->instance['qrcode'])){
 			$this->instance['qrcode'] = new QRCode($this->appid,$this->secret);
 		}
@@ -57,7 +59,7 @@ class WechatMini
 	/**
 	 * @return Statistic 数据统计对象
 	 */
-	public function getStatistic(){
+	public function Statistic(){
 		if(!isset($this->instance['statistic'])){
 			$this->instance['statistic'] = new Statistic($this->appid,$this->secret);
 		}
@@ -67,11 +69,21 @@ class WechatMini
 	/**
 	 * @return CustomMsg 客户消息对象
 	 */
-	public function getCustomMsg(){
+	public function CustomMsg(){
 		if(!isset($this->instance['custommsg'])){
 			$this->instance['custommsg'] = new CustomMsg($this->appid,$this->secret);
 		}
 		return $this->instance['custommsg'];
 	}
+
+    /**
+     * @return Shop 商品类目对象
+     */
+    public function Shop(){
+        if(!isset($this->instance['shop'])){
+            $this->instance['shop'] = new Shop($this->appid,$this->secret);
+        }
+        return $this->instance['shop'];
+    }
 
 }

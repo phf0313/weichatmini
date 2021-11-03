@@ -7,18 +7,27 @@ class WeCache
     private static $cacheDir;
     private static $cacheFile;
     private static $cacheTime;
+    private static $cacheInitFile;
 
     public static function init($cache_dir, $cache_time = 600)
     {
         self::$cacheDir = $cache_dir;
         self::$cacheTime = $cache_time;
-        self::$cacheFile = $cache_dir . '/cache';
+        self::$cacheFile = self::$cacheInitFile = $cache_dir . '/cache';
+    }
+
+    /**
+     * 设置超时时间
+     * @param int $cache_time
+     */
+    public static function setTime($cache_time = 600)
+    {
+        self::$cacheTime = $cache_time;
     }
 
     public static function get($key, $default = '')
     {
-
-        $data = self::readAndRender();
+        $data = self::readAndRender($key);
         self::checkTimeoutAndSave($data);
 
         if (isset($data[$key])) {
@@ -32,16 +41,21 @@ class WeCache
     {
         if (!$time) $time = self::$cacheTime;
 
-        $data = self::readAndRender();
+        $data = self::readAndRender($key);
+
         $data[$key] = ['value' => $value, 'time' => time() + $time];
 
         return self::checkTimeoutAndSave($data);
     }
 
-    private static function readAndRender()
+    private static function readAndRender($key)
     {
         if (!file_exists(self::$cacheDir)) {
             mkdir(self::$cacheDir);
+        }
+
+        if(self::$cacheFile === self::$cacheInitFile){
+            self::$cacheFile .= '_'.$key;
         }
 
         if (file_exists(self::$cacheFile)) {
@@ -68,6 +82,7 @@ class WeCache
 
         $content = json_encode($data);
         if (file_put_contents(self::$cacheFile, $content)) {
+            self::$cacheFile = self::$cacheInitFile;
             return true;
         } else {
             return false;

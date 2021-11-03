@@ -3,7 +3,7 @@
 
 namespace Phf0313\WechatMini\Api;
 
-use Phf0313\WechatMini\Api\WeCache;
+use http\Params;
 
 class BaseApi
 {
@@ -52,22 +52,30 @@ class BaseApi
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function sendHttpRequest($url,$url_param = null,$body_param = null,$is_post = true){
+	public function sendHttpRequest($url,$url_param = null,$body_param = '',$is_post = true){
 		if($url_param){
 			$url_param = '?'.http_build_query($url_param);
 		}
+
 		if($body_param){
-			$body_param = json_encode($body_param,JSON_UNESCAPED_UNICODE);
-		}
+            $body_param = json_encode($body_param,JSON_UNESCAPED_UNICODE);
+        }else{
+		    $body_param = '{}';
+        }
+
+        $header = array();
+//        $header[] = 'Accept:application/json';
+//        $header[] = 'Content-Type:application/json;charset=utf-8';
+
 		$ch = curl_init($url.$url_param);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_HEADER, $header);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		if($is_post){
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $body_param);
 		}
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+//		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+//		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$array_data = json_decode($data,true);
@@ -79,5 +87,6 @@ class BaseApi
 		}
 		return $data;
 	}
+
 
 }

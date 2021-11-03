@@ -40,4 +40,11 @@ class ApiUrl{
 	const STATISTIC_VISIT_PAGE = 'https://api.weixin.qq.com/datacube/getweanalysisappidvisitpage';
 	const STATISTIC_VISIT_USERS_FEATURE = 'https://api.weixin.qq.com/datacube/getweanalysisappiduserportrait';
 
+
+	// SHOP
+    const BASH_SHOP = 'https://api.weixin.qq.com/shop/';
+    const SHOP_CAT = self::BASH_SHOP.'shop/cat/get'; //类目
+    const SHOP_AUDIT_CAT = self::BASH_SHOP.'audit/audit_category'; //类目审核
+
+
 }
