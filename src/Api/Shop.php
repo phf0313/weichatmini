@@ -1,6 +1,6 @@
 <?php
 
-namespace phf0313\WechatMini\Api;
+namespace WechatMini\Api;
 
 class Shop extends BaseApi
 {

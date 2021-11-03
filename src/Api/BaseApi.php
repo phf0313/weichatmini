@@ -1,7 +1,7 @@
 <?php
 
 
-namespace phf0313\WechatMini\Api;
+namespace WechatMini\Api;
 
 use http\Params;
 

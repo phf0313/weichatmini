@@ -15,8 +15,9 @@
   },
 
   "autoload": {
+
     "psr-4": {
-      "phf0313/WechatMini\\": "src/"
+      "WechatMini\\": "src/"
     }
   }
 }
