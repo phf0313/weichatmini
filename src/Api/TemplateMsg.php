@@ -1,6 +1,6 @@
 <?php
 
-namespace Phf0313\WechatMini\Api;
+namespace phf0313\WechatMini\Api;
 
 class TemplateMsg extends BaseApi
 {

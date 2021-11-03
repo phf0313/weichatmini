@@ -1,6 +1,6 @@
 <?php
 
-namespace Phf0313\WechatMini\Api;
+namespace phf0313\WechatMini\Api;
 
 class Shop extends BaseApi
 {
@@ -8,7 +8,6 @@ class Shop extends BaseApi
     {
         $url = ApiUrl::SHOP_CAT;
 
-        dd($url);
         $key = 'cat_list';
         if(!$list = WeCache::get($key)){
             $list = $this->sendRequestWithToken($url);

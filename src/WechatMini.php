@@ -1,16 +1,15 @@
 <?php
 
-namespace Phf0313\WechatMini;
+namespace phf0313\WechatMini;
 
-use Phf0313\WechatMini\Api\BaseApi;
-use Phf0313\WechatMini\Api\CustomMsg;
-use Phf0313\WechatMini\Api\QRCode;
-use Phf0313\WechatMini\Api\SessionKey;
-use Phf0313\WechatMini\Api\Shop;
-use Phf0313\WechatMini\Api\Statistic;
-use Phf0313\WechatMini\Api\TemplateMsg;
+use phf0313\WechatMini\Api\CustomMsg;
+use phf0313\WechatMini\Api\QRCode;
+use phf0313\WechatMini\Api\SessionKey;
+use phf0313\WechatMini\Api\Shop;
+use phf0313\WechatMini\Api\Statistic;
+use phf0313\WechatMini\Api\TemplateMsg;
 
-use Phf0313\WechatMini\Api\WeCache;
+use phf0313\WechatMini\Api\WeCache;
 
 class WechatMini
 {
@@ -22,7 +21,7 @@ class WechatMini
 		$this->appid = $appid;
 		$this->secret = $secret;
 		$this->instance = [];
-        WeCache::init($token_cache_dir);
+//        WeCache::init($token_cache_dir);
 	}
 
 	/**

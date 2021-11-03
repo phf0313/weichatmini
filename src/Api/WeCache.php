@@ -1,6 +1,6 @@
 <?php
 
-namespace Phf0313\WechatMini\Api;
+namespace phf0313\WechatMini\Api;
 
 class WeCache
 {
@@ -50,7 +50,7 @@ class WeCache
 
     private static function readAndRender($key)
     {
-        if (!file_exists(self::$cacheDir)) {
+        if (!is_dir(self::$cacheDir)) {
             mkdir(self::$cacheDir);
         }
 
