@@ -1,6 +1,6 @@
 <?php
 
-namespace WechatMini\Api;
+namespace WeMiniGrade\Api;
 
 class ApiUrl{
 
@@ -42,9 +42,7 @@ class ApiUrl{
 
 
 	// SHOP
-    const BASH_SHOP = 'https://api.weixin.qq.com/shop/';
-    const SHOP_CAT = self::BASH_SHOP.'shop/cat/get'; //类目
-    const SHOP_AUDIT_CAT = self::BASH_SHOP.'audit/audit_category'; //类目审核
+    const SHOP = 'https://api.weixin.qq.com/shop';
 
 
 }

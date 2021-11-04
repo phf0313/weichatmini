@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WechatMini\Api;
+namespace WeMiniGrade\Api;
 
 use http\Params;
 
@@ -17,7 +17,7 @@ class BaseApi
 	}
 
 	public function getAccessToken(){
-		$token = WeCache::get($this->appid.'_token',false);
+		$token = WeMiniCache::get($this->appid.'_token',false);
 		if($token){
 			return $token;
 		}
@@ -33,7 +33,7 @@ class BaseApi
 			throw new \Exception($res['errcode'].':'.$res['errmsg'],$res['errcode']);
 		}
 
-        WeCache::set($this->appid.'_token',$res['access_token'],$res['expires_in']-200);
+        WeMiniCache::set($this->appid.'_token',$res['access_token'],$res['expires_in']-200);
 		return $res['access_token'];
 	}
 

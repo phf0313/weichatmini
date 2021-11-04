@@ -1,8 +1,8 @@
 <?php
 
-namespace WechatMini\Api;
+namespace WeMiniGrade\Api;
 
-class WeCache
+class WeMiniCache
 {
     private static $cacheDir;
     private static $cacheFile;
