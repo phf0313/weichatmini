@@ -4,84 +4,130 @@ namespace WeMiniGrade\Api;
 
 class Shop extends BaseApi
 {
-    private $uri = [
-        // 介入流程
-        'checkRegister' => 'register/check', // 获取接入状态
-        'finishRegister' => 'register/finish_access_info', // 完成介入任务
-        'appleScene' => 'register/apply_scene', // 场景接入申请
+    /**
+     * 获取接入状态
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/enter/enter_check.html
+     * @return mixed
+     */
+    public function checkRegister()
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        return $this->sendRequestWithToken($url);
+    }
 
-        // 类目、品牌
-        'getCatList' => 'cat/get', //类目
-        'uploadImage' => 'img/upload', // 上传图片
-        'auditBrand' => 'audit/audit_brand', // 品牌审核
-        'auditCategory' => 'audit/audit_category', // 类目审核
-        'getAudit' => 'audit/result', // 获取审核结果
+    /**
+     * 完成接入任务
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/enter/finish_access_info.html
+     * @param int access_info_item  6:完成spu接口，7:完成订单接口，8:完成物流接口，9:完成售后接口，10:测试完成，11:发版完成
+     * @return mixed
+     */
+    public function finishRegister(int $item_id)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        $param = [
+            'access_info_item' => $item_id
+        ];
+        return $this->sendRequestWithToken($url, $param);
 
-         // 商家
-        'getAccountCatList' => 'account/get_category_list', // 获取商家类目列表
-        'getAccountBrandList' => 'account/get_brand_list', // 获取商家品牌列表
-        'updateAccount' => 'account/update_info', // 更新商家信息
-        'getAccount' => 'account/get_info', // 获取商家信息
+    }
 
-        // 商品
-        'addSpu' => 'spu/add', // 添加商品
-        'delSpu' => 'spu/del', // 删除商品
-        'delSpuAudit' => 'spu/del_audit', //撤回商品审核
-        'getSpu' => 'spu/get', // 获取商品
-        'getSpuList' => 'spu/get_list', // 获取商品列表
-        'updateSpu' => 'spu/update', // 更新商品
-        'onlineSpu' => 'spu/listing', // 上架商品
-        'offlineSpu' => 'spu/delisting', // 下架商品
-        'updateSpuNotAudit' => 'spu/update_without_audit', // 免审核更新商品
+    /**
+     * 场景接入申请
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/enter/scene_apply.html
+     * @param int scene_group_id  1:视频号、公众号场景
+     * @return mixed
+     */
+    public function appleScene(int $group_id)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        $param = [
+            'scene_group_id' => $group_id
+        ];
+        return $this->sendRequestWithToken($url, $param);
+    }
 
-        // 订单
-        'checkOrderScene' => 'scene/check', // 检查场景值是否在支付校验范围内
-        'addOrder' => 'order/add', // 生成订单
-        'payOrder' => 'order/pay', // 同步订单支付结果
-        'getOrder' => 'order/get', // 获取订单详情
-        'getFinderOrderList' => 'order/get_list_by_finder', // 按照推广员获取订单
-        'getSharerOrderList' => 'order/get_list_by_sharer', // 按照分享员获取订单
+    /**
+     * 获取商家类目列表
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/account/category_list.html
+     * @return mixed
+     */
+    public function getAccountCatList()
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        return $this->sendRequestWithToken($url);
+    }
 
-        // 物流
-        'getDeliveryCompanyList' => 'delivery/get_company_list', // 获取快递公司列表
-        'sendDelivery' => 'delivery/send', // 订单发货
-        'recieveDelivery' => 'delivery/recieve', // 订单确认收货
+    /**
+     * 获取商家品牌列表
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/account/brand_list.html
+     * @return mixed
+     */
+    public function getAccountBrandList()
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        return $this->sendRequestWithToken($url);
+    }
 
-        // 优惠券（略）
+    /**
+     * 更新商家信息
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/account/update_info.html
+     * @param string $path 小程序path
+     * @param string $phone 客服联系方式
+     * @return mixed
+     */
+    public function updateAccount(string $path = '', string $phone = '')
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        $param = [];
+        if ($path) {
+            $param['service_agent_path'] = $path;
+        } elseif ($phone) {
+            $param['service_agent_phone'] = $phone;
+        }
 
-        // 售后
-        'addAftersale' => 'aftersale/add', // 创建售后
-        'getAftersale' => 'aftersale/get', // 获取订单下售后单
-        'updateAftersale' => 'aftersale/update', // 更新售后
+        return $this->sendRequestWithToken($url, $param);
+    }
 
-        // 推广员
-        'getPromoterList' => 'promoter/list', // 获取推广员列表
-    ];
+    /**
+     * 获取商家信息
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/account/get_info.html
+     * @return mixed
+     */
+    public function getAccount()
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        return $this->sendRequestWithToken($url);
+    }
+
+    /**
+     * 获取三级类目列表
+     * @return mixed
+     */
+    public function getCatList()
+    {
+        $key = 'cat_list';
+        if (!$data = WeMiniCache::get($key)) {
+            $url = $this->getUrl(__FUNCTION__);
+            $data = $this->sendRequestWithToken($url);
+
+            if ($data) {
+                WeMiniCache::set($key, $data, 80000);
+            }
+        }
+
+        return $data['third_cat_list'];
+
+    }
 
     /**
      * 获取接口URL
-     * @param $method
+     * @param string $method 方法名称
      * @return string
      */
     private function getUrl($method)
     {
-        return ApiUrl::SHOP.'/'.$this->uri[$method];
+        return ApiUrl::SHOP . '/' . ApiUrl::SHOP_URI[$method];
     }
 
-    public function getCatList()
-    {
-        $key = 'cat_list';
-        if(!$list = WeMiniCache::get($key)){
-            $url = $this->getUrl(__FUNCTION__);
-            $list = $this->sendRequestWithToken($url);
 
-            if($list){
-                WeMiniCache::setTime(80000);
-                WeMiniCache::set($key, $list);
-            }
-        }
-
-        return $list['third_cat_list'];
-
-    }
 }

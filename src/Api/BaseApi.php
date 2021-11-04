@@ -7,86 +7,82 @@ use http\Params;
 
 class BaseApi
 {
-	protected $appid;
-	protected $secret;
+    protected $appid;
+    protected $secret;
 
-	public function __construct($appid,$secret)
-	{
-		$this->appid = $appid;
-		$this->secret = $secret;
-	}
+    public function __construct($appid, $secret)
+    {
+        $this->appid = $appid;
+        $this->secret = $secret;
+    }
 
-	public function getAccessToken(){
-		$token = WeMiniCache::get($this->appid.'_token',false);
-		if($token){
-			return $token;
-		}
-
-		$url = ApiUrl::ACCESS_TOKEN;
-		$param = array(
-			'grant_type'  => 'client_credential',
-			'appid'  => $this->appid,
-			'secret'  => $this->secret,
-		);
-		$res = $this->sendHttpRequest($url,$param,null,false);
-		if(!isset($res['access_token'])){
-			throw new \Exception($res['errcode'].':'.$res['errmsg'],$res['errcode']);
-		}
-
-        WeMiniCache::set($this->appid.'_token',$res['access_token'],$res['expires_in']-200);
-		return $res['access_token'];
-	}
-
-	public function sendRequestWithToken($url,$body_param = null,$is_post = true){
-		$token = array(
-			'access_token'  =>  $this->getAccessToken()
-		);
-		return $this->sendHttpRequest($url,$token,$body_param,$is_post);
-	}
-
-	/**
-	 * @param string $url
-	 * @param array $url_param
-	 * @param array $body_param
-	 * @param bool $is_post
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function sendHttpRequest($url,$url_param = null,$body_param = '',$is_post = true){
-		if($url_param){
-			$url_param = '?'.http_build_query($url_param);
-		}
-
-		if($body_param){
-            $body_param = json_encode($body_param,JSON_UNESCAPED_UNICODE);
-        }else{
-		    $body_param = '{}';
+    public function getAccessToken()
+    {
+        $token = WeMiniCache::get($this->appid . '_token', false);
+        if ($token) {
+            return $token;
         }
+        $url = ApiUrl::ACCESS_TOKEN;
+        $param = array(
+            'grant_type' => 'client_credential',
+            'appid' => $this->appid,
+            'secret' => $this->secret,
+        );
+        $res = $this->sendHttpRequest($url, $param, '', false);
+        if (!isset($res['access_token'])) {
+            throw new \Exception($res['errcode'] . ':' . $res['errmsg'], $res['errcode']);
+        }
+        WeMiniCache::set($this->appid . '_token', $res['access_token'], $res['expires_in'] - 200);
+        return $res['access_token'];
+    }
 
+    public function sendRequestWithToken($url, $body_param = '', $is_post = true)
+    {
+        $token = [
+            'access_token' => $this->getAccessToken()
+        ];
+        return $this->sendHttpRequest($url, $token, $body_param, $is_post);
+    }
+
+    /**
+     * @param string $url
+     * @param array $url_param
+     * @param array $body_param
+     * @param bool $is_post
+     * @return mixed
+     * @throws Exception
+     */
+    public function sendHttpRequest($url, $url_param = '', $body_param = '', $is_post = true)
+    {
+        if ($url_param) {
+            $url_param = '?' . http_build_query($url_param);
+        }
+        if ($body_param) {
+            $body_param = json_encode($body_param, JSON_UNESCAPED_UNICODE);
+        } else {
+            $body_param = '{}';
+        }
         $header = array();
-//        $header[] = 'Accept:application/json';
-//        $header[] = 'Content-Type:application/json;charset=utf-8';
-
-		$ch = curl_init($url.$url_param);
-		curl_setopt($ch, CURLOPT_HEADER, $header);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		if($is_post){
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $body_param);
-		}
-//		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-//		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$array_data = json_decode($data,true);
-		if($array_data){
-			if(isset($array_data['errcode'])&&$array_data['errcode']!=0){
-				throw new \Exception($array_data['errcode'].':'.$array_data['errmsg'],$array_data['errcode']);
-			}
-			return $array_data;
-		}
-		return $data;
-	}
+        $ch = curl_init($url . $url_param);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, $header);
+        if ($is_post) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body_param);
+        }
+        $data = curl_exec($ch);
+        curl_close($ch);
+        $array_data = json_decode($data, true);
+        if ($array_data && is_array($array_data)) {
+            if ((isset($array_data['errcode']) && $array_data['errcode'] == 0) || isset($array_data['access_token'])) {
+                return $array_data;
+            } else {
+                throw new \Exception($array_data['errmsg'], $array_data['errcode']);
+            }
+        } else {
+            throw new \Exception($array_data);
+        }
+    }
 
 
 }
