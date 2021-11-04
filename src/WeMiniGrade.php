@@ -2,6 +2,7 @@
 
 namespace WeMiniGrade;
 
+use WeMiniGrade\Api\BaseApi;
 use WeMiniGrade\Api\CustomMsg;
 use WeMiniGrade\Api\QRCode;
 use WeMiniGrade\Api\SessionKey;
@@ -24,9 +25,19 @@ class WeMiniGrade
         WeMiniCache::init($token_cache_dir);
 	}
 
+    /**
+     * @return BaseApi 基础框架
+     */
+    public function Base(){
+        if(!isset($this->instance['base'])){
+            $this->instance['base'] = new BaseApi($this->appid,$this->secret);
+        }
+        return $this->instance['base'];
+    }
+
 	/**
 	 * @param $code
-	 * @return array sessionkey相关数组
+	 * @return mixed sessionkey相关数组
 	 */
 	public function getSessionKey($code){
 		if(!isset($this->instance['sessionkey'])){
