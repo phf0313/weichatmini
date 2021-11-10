@@ -19,5 +19,8 @@
     "psr-4": {
       "WeMiniGrade\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "files": ["tests/function.php"]
   }
 }
