@@ -116,6 +116,9 @@ try {
     ];
 //    dd($wechat->Shop()->addAftersale($aftersale));
 
+//    dd($wechat->Shop()->getSpuList(['need_edit_spu'=>1], 1, 20));
+    dd($wechat->Shop()->getSpu(['need_edit_spu'=>1,'product_id'=>1]));
+
 
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();

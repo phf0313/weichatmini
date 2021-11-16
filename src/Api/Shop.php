@@ -121,6 +121,7 @@ class Shop extends BaseApi
         return $this->sendRequestWithToken($url);
     }
 
+
     /**
      * 增加商品
      * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/account/update_info.html
@@ -195,6 +196,73 @@ class Shop extends BaseApi
 
         return $this->sendRequestWithToken($url, $param);
 
+    }
+
+
+    /**
+     * 获取商品列表
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/get_spu_list.html
+     * @param array $condition 条件
+     * @param int $page 页码
+     * @param int $page_size 页面数量
+     * @return mixed
+     */
+    public function getSpuList(array $condition = [], int $page = 1, int $page_size=10)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'status'=>$condition['status']??'', // 选填，不填时获取所有状态商品
+            'start_create_time'=>$condition['start_create_time']??'', // 时间范围 create_time 和 update_time 同时存在时，以 create_time 的范围为准
+            'end_create_time'=>$condition['end_create_time']??'',
+            'start_update_time'=>$condition['start_update_time']??'',
+            'end_update_time'=>$condition['end_update_time']??'',
+            'need_edit_spu' => $condition['need_edit_spu']??'0', // 默认0:获取线上数据, 1:获取草稿数据
+            'page' => $page,
+            'page_size' => $page_size,
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
+
+    }
+
+    /**
+     * 获取商品
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/get_spu.html
+     * @param array $condition 条件
+     * @return mixed
+     */
+    public function getSpu(array $condition = [])
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'product_id'=>$condition['product_id']??'', //交易组件平台内部商品ID，与out_product_id二选一
+            'out_product_id'=>$condition['out_product_id']??'', //商家自定义商品ID，与product_id二选一
+            'need_edit_spu' => $condition['need_edit_spu']??'0', // 默认0:获取线上数据, 1:获取草稿数据
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
+
+    }
+
+    /**
+     * 删除商品
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/del_spu.html
+     * @param string $out_product_id 商家自定义商品ID，与product_id二选一
+     * @param string  $product_id 交易组件平台内部商品ID，与out_product_id二选一
+     * @return mixed
+     */
+    public function delSpu(string $out_product_id = '', string $product_id = '')
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'product_id'=>$product_id??'', //交易组件平台内部商品ID，与out_product_id二选一
+            'out_product_id'=>$out_product_id??'', //商家自定义商品ID，与product_id二选一
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
     }
 
     /**
