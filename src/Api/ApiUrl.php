@@ -62,6 +62,7 @@ class ApiUrl{
         'delSpuAudit' => 'spu/del_audit', //撤回商品审核
         'getSpu' => 'spu/get', // 获取商品
         'getSpuList' => 'spu/get_list', // 获取商品列表
+//        'searchSpuList' => 'spu/search', // 搜索商品
         'updateSpu' => 'spu/update', // 更新商品
         'onlineSpu' => 'spu/listing', // 上架商品
         'offlineSpu' => 'spu/delisting', // 下架商品

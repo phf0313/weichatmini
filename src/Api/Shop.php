@@ -207,24 +207,99 @@ class Shop extends BaseApi
      * @param int $page_size 页面数量
      * @return mixed
      */
-    public function getSpuList(array $condition = [], int $page = 1, int $page_size=10)
+    public function getSpuList(array $condition = [], int $page = 1, int $page_size = 10)
     {
         $url = $this->getUrl(__FUNCTION__);
 
         $param = [
-            'status'=>$condition['status']??'', // 选填，不填时获取所有状态商品
-            'start_create_time'=>$condition['start_create_time']??'', // 时间范围 create_time 和 update_time 同时存在时，以 create_time 的范围为准
-            'end_create_time'=>$condition['end_create_time']??'',
-            'start_update_time'=>$condition['start_update_time']??'',
-            'end_update_time'=>$condition['end_update_time']??'',
-            'need_edit_spu' => $condition['need_edit_spu']??'0', // 默认0:获取线上数据, 1:获取草稿数据
+            'start_create_time' => $condition['start_create_time'] ?? '', // 时间范围 create_time 和 update_time 同时存在时，以 create_time 的范围为准
+            'end_create_time' => $condition['end_create_time'] ?? '',
+            'start_update_time' => $condition['start_update_time'] ?? '',
+            'end_update_time' => $condition['end_update_time'] ?? '',
+            'need_edit_spu' => $condition['need_edit_spu'] ?? 0, // 默认0:获取线上数据, 1:获取草稿数据
             'page' => $page,
             'page_size' => $page_size,
         ];
+        if (isset($condition['status'])) {
+            $param['status'] = $condition['status']; // 商品状态
+        }
 
         return $this->sendRequestWithToken($url, $param);
 
     }
+
+    /**
+     * 更新商品
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/update_spu.html
+     * @param array $goods 商品信息
+     * @return mixed
+     */
+    public function updateSpu(array $goods)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'out_product_id' => $goods['out_product_id'] ?? '',
+            'product_id' => $goods['product_id'] ?? '',
+            'title' => $goods['title'] ?? '',
+            'path' => $goods['path'] ?? '',
+            'head_img' => $goods['head_img'] ?? [],
+            'qualification_pics' => $goods['qualification_pics'] ?? [],
+            'desc_info' => [
+                'desc' => $goods['desc_info']['desc'] ?? '',
+                'imgs' => $goods['desc_info']['imgs'] ?? '',
+            ],
+            'third_cat_id' => $goods['third_cat_id'] ?? '',
+            'brand_id' => $goods['brand_id'] ?? '2100000000', // 没有品牌时使用2100000000
+            'skus' => [],
+            'express_fee' => $goods['express_fee'] ?? 0,
+            'sell_time' => $goods['sell_time'] ?? '',
+            'pick_up_type' => $goods['pick_up_type'] ?? [1], // 配送方式 1快递 2同城 3上门自提 4点餐
+            'onsale' => $goods['onsale'] ?? 1, // 0-不在售 1-在售
+        ];
+        foreach ($goods['skus'] as $sku) {
+            $tmp_sku = [
+                'out_product_id' => $sku['out_product_id'] ?? '',
+                'out_sku_id' => $sku['out_sku_id'] ?? '',
+                'thumb_img' => $sku['thumb_img'] ?? '',
+                'sale_price' => $sku['sale_price'] ?? 1000,// 售卖价格,以分为单位
+                'market_price' => $sku['market_price'] ?? 2000,// 市场价格,以分为单位
+                'stock_num' => $sku['stock_num'] ?? 10,// 库存
+                'barcode' => $sku['barcode'] ?? '',// 条形码
+                'sku_code' => $sku['sku_code'] ?? '',// 商品编码
+            ];
+
+            $param['skus'][] = $tmp_sku;
+        }
+
+        return $this->sendRequestWithToken($url, $param);
+    }
+
+    /**
+     * 获取商品列表
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/get_spu_list.html
+     * @param array $condition 条件 注意：目前只能搜到到status=5的已上架商品
+     * @param int $page 页码
+     * @param int $page_size 每页数量(不超过10,000)
+     * @return mixed
+     */
+//    public function searchSpuList(array $condition = [], int $page = 1, int $page_size = 10000)
+//    {
+//        $url = $this->getUrl(__FUNCTION__);
+//
+//        $param = [
+//            'keyword' => $condition['keyword']??'', // 商品标题，模糊搜索
+//            'page' => $page,
+//            'page_size' => $page_size,
+//            'source' => $condition['source']??'', // 默认1, 1: 小商店自营商品, 2:带货商品
+//        ];
+//        if (isset($condition['status'])) {
+//            $param['status'] = $condition['status']; // 商品状态,目前只能搜到到status=5的已上架商品
+//        }
+//
+//        return $this->sendRequestWithToken($url, $param);
+//
+//    }
 
     /**
      * 获取商品
@@ -237,9 +312,9 @@ class Shop extends BaseApi
         $url = $this->getUrl(__FUNCTION__);
 
         $param = [
-            'product_id'=>$condition['product_id']??'', //交易组件平台内部商品ID，与out_product_id二选一
-            'out_product_id'=>$condition['out_product_id']??'', //商家自定义商品ID，与product_id二选一
-            'need_edit_spu' => $condition['need_edit_spu']??'0', // 默认0:获取线上数据, 1:获取草稿数据
+            'product_id' => $condition['product_id'] ?? '', //交易组件平台内部商品ID，与out_product_id二选一
+            'out_product_id' => $condition['out_product_id'] ?? '', //商家自定义商品ID，与product_id二选一
+            'need_edit_spu' => $condition['need_edit_spu'] ?? 0, // 默认0:获取线上数据, 1:获取草稿数据
         ];
 
         return $this->sendRequestWithToken($url, $param);
@@ -250,7 +325,7 @@ class Shop extends BaseApi
      * 删除商品
      * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/del_spu.html
      * @param string $out_product_id 商家自定义商品ID，与product_id二选一
-     * @param string  $product_id 交易组件平台内部商品ID，与out_product_id二选一
+     * @param string $product_id 交易组件平台内部商品ID，与out_product_id二选一
      * @return mixed
      */
     public function delSpu(string $out_product_id = '', string $product_id = '')
@@ -258,11 +333,39 @@ class Shop extends BaseApi
         $url = $this->getUrl(__FUNCTION__);
 
         $param = [
-            'product_id'=>$product_id??'', //交易组件平台内部商品ID，与out_product_id二选一
-            'out_product_id'=>$out_product_id??'', //商家自定义商品ID，与product_id二选一
+            'product_id' => $product_id ?? '', //交易组件平台内部商品ID，与out_product_id二选一
+            'out_product_id' => $out_product_id ?? '', //商家自定义商品ID，与product_id二选一
         ];
 
         return $this->sendRequestWithToken($url, $param);
+    }
+
+    /**
+     * 获取SPU草稿状态
+     * @return string[]
+     */
+    public function getSpuEditStatus(): array
+    {
+        return [
+            1 => '未审核',
+            2 => '审核中',
+            3 => '审核失败',
+            4 => '审核成功',
+        ];
+    }
+
+    /**
+     * 获取SPU审核状态
+     * @return string[]
+     */
+    public function getSpuStatus(): array
+    {
+        return [
+            0 => '初始值',
+            5 => '上架',
+            11 => '自主下架',
+            13 => '违规下架/风控系统下架',
+        ];
     }
 
     /**
@@ -466,22 +569,22 @@ class Shop extends BaseApi
             'type' => $aftersale['type'] ?? 2, // 售后类型，1:退款,2:退款退货,3:换货
             'create_time' => $aftersale['create_time'] ?? '', // 发起申请时间，yyyy-MM-dd HH:mm:ss
             'status' => $aftersale['status'] ?? 0, // 0:未受理,1:用户取消,2:商家受理中,3:商家逾期未处理,4:商家拒绝退款,5:商家拒绝退货退款,6:待买家退货,7:退货退款关闭,8:待商家收货,11:商家退款中,12:商家逾期未退款,13:退款完成,14:退货退款完成,15:换货完成,16:待商家发货,17:待用户确认收货,18:商家拒绝换货,19:商家已收到货
-            'finish_all_aftersale' => $aftersale['finish_all_aftersale']??0,// 0:订单可继续售后, 1:订单无继续售后
+            'finish_all_aftersale' => $aftersale['finish_all_aftersale'] ?? 0,// 0:订单可继续售后, 1:订单无继续售后
             'product_infos' => [
 
             ],
-            'refund_reason' => $aftersale['refund_reason']??'', //退款原因
-            'refund_address' => $aftersale['refund_address']??'', //买家收货地址
-            'orderamt' => $aftersale['orderamt']??0, //退款金额??
+            'refund_reason' => $aftersale['refund_reason'] ?? '', //退款原因
+            'refund_address' => $aftersale['refund_address'] ?? '', //买家收货地址
+            'orderamt' => $aftersale['orderamt'] ?? 0, //退款金额??
 
 
         ];
 
-        foreach($aftersale['product_infos'] as $product){
+        foreach ($aftersale['product_infos'] as $product) {
             $param['product_infos'][] = [
-                'out_product_id' => $product['out_product_id']??'', //商家自定义商品ID
-                'out_sku_id' => $product['out_sku_id']??'', //商家自定义sku ID, 如果没有则不填
-                'product_cnt' => $product['product_cnt']??1, //参与售后的商品数量
+                'out_product_id' => $product['out_product_id'] ?? '', //商家自定义商品ID
+                'out_sku_id' => $product['out_sku_id'] ?? '', //商家自定义sku ID, 如果没有则不填
+                'product_cnt' => $product['product_cnt'] ?? 1, //参与售后的商品数量
             ];
         }
         return $this->sendRequestWithToken($url, $param);
@@ -498,10 +601,10 @@ class Shop extends BaseApi
         $url = $this->getUrl(__FUNCTION__);
 
         $param = [
-            'out_order_id' => $aftersale['out_order_id']??'', // 商家自定义订单ID，与 order_id 二选一
-            'openid' => $aftersale['openid']??'', // 用户的openid
-            'status' => $aftersale['status']??'', // 0:未受理,1:用户取消,2:商家受理中,3:商家逾期未处理,4:商家拒绝退款,5:商家拒绝退货退款,6:待买家退货,7:退货退款关闭,8:待商家收货,11:商家退款中,12:商家逾期未退款,13:退款完成,14:退货退款完成,15:换货完成,16:待商家发货,17:待用户确认收货,18:商家拒绝换货,19:商家已收到货
-            'finish_all_aftersale' => $aftersale['finish_all_aftersale']??0,//0:售后未结束, 1:售后结束且订单状态流转
+            'out_order_id' => $aftersale['out_order_id'] ?? '', // 商家自定义订单ID，与 order_id 二选一
+            'openid' => $aftersale['openid'] ?? '', // 用户的openid
+            'status' => $aftersale['status'] ?? '', // 0:未受理,1:用户取消,2:商家受理中,3:商家逾期未处理,4:商家拒绝退款,5:商家拒绝退货退款,6:待买家退货,7:退货退款关闭,8:待商家收货,11:商家退款中,12:商家逾期未退款,13:退款完成,14:退货退款完成,15:换货完成,16:待商家发货,17:待用户确认收货,18:商家拒绝换货,19:商家已收到货
+            'finish_all_aftersale' => $aftersale['finish_all_aftersale'] ?? 0,//0:售后未结束, 1:售后结束且订单状态流转
         ];
         return $this->sendRequestWithToken($url, $param);
     }
