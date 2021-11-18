@@ -16,7 +16,13 @@ class BaseApi
         $this->secret = $secret;
     }
 
-    public function getAccessToken()
+    /**
+     * 获取access token
+     * @param int $refresh
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function getAccessToken(int $refresh = 0)
     {
         $token = WeMiniCache::get($this->appid . '_token', false);
         if ($token) {
@@ -36,6 +42,24 @@ class BaseApi
         return $res['access_token'];
     }
 
+    /**
+     * 重新获取access token
+     * @return mixed|string
+     * @throws \Exception
+     */
+    public function refreshAccessToken()
+    {
+        return $this->getAccessToken(1);
+    }
+
+    /**
+     * 带access token 请求
+     * @param $url
+     * @param string $body_param
+     * @param bool $is_post
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function sendRequestWithToken($url, $body_param = '', $is_post = true)
     {
         $token = [
@@ -45,6 +69,7 @@ class BaseApi
     }
 
     /**
+     * 发送请求
      * @param string $url
      * @param array $url_param
      * @param array $body_param
