@@ -116,9 +116,7 @@ try {
     ];
 //    dd($wechat->Shop()->addAftersale($aftersale));
 
-//    dd($wechat->Shop()->getSpuList([], 1, 20));
-//    dd($wechat->Shop()->searchSpuList(['keyword'=>'维达'], 1, 20));
-//    dd($wechat->Shop()->getSpu(['need_edit_spu'=>1',product_id'=>100092]));
+    dd($wechat->Shop()->getSpuList([], 1, 20));
 
 
 } catch (\Exception $ex) {

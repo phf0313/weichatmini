@@ -21,7 +21,7 @@ try {
     $wechat = new WeMiniGrade('wx55081514835ce890', '21c94af8487a75d71013a157597cba32', $cache_config);
 
     // get access token
-//    $access_token = $wechat->Base()->getAccessToken();
+//    $access_token = $wechat->Base()->getAccessToken(1);
 //    echo $access_token;
 
 //    echo json_encode(($wechat->Shop()->checkRegister()));
@@ -77,6 +77,22 @@ try {
 //    );
 //    dd($wechat->Shop()->addSpu($goods));
 //    dd($wechat->Shop()->onlineOfflineSpu(1,'105017'));
+
+//    $image = [
+//        'resp_type' =>1,
+//        'upload_type' => 1,
+//        'img_url' => 'https://m.goushihui168.com/Public/image/yingyezhizhao_wap.jpg',
+//    ];
+
+//    $image = [
+//        'resp_type' =>1,
+//        'upload_type' => 0,
+//        'media' => 'C:\Users\phf03\Desktop\Temp\shipin.jpg'
+//    ];
+//    dd(($wechat->Shop()->uploadImage($image)));
+
+//        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
+
 
 
 

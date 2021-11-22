@@ -3,6 +3,7 @@
 namespace WeMiniGrade\Api;
 
 use Exception;
+use GuzzleHttp\Psr7;
 
 class Shop extends BaseApi
 {
@@ -60,11 +61,92 @@ class Shop extends BaseApi
             $data = $this->sendRequestWithToken($url);
 
             if ($data) {
-                WeMiniCache::set($key, $data, 80000);
+//                WeMiniCache::set($key, $data, 80000);
             }
         }
 
         return $data['third_cat_list'];
+
+    }
+
+    /**
+     * 上传图片
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/public/upload_img.html
+     * @param array $image 图片信息
+     * @return mixed
+     */
+    public function uploadImage(array $image)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            [
+                'name' => 'resp_type',
+                'contents' => $image['resp_type'] ?? 1, // 0:此参数返回media_id，目前只用于品牌申请品牌和类目，推荐使用1：返回临时链接
+            ],
+            [
+                'name' => 'upload_type',
+                'contents' => $image['upload_type'] ?? 1, // 0:图片流，1:图片url
+            ],
+        ];
+        switch ($image['upload_type']) {
+            case 1:
+                $param[] = [
+                    'name' => 'img_url',
+                    'contents' => $image['img_url'] ?? '', // upload_type=1时必传
+                ];
+                break;
+            case 0:
+                $param[] = [
+                    'name' => 'media',
+                    'contents' => Psr7\Utils::tryFopen($image['media'], 'r'), // 图片流
+                ];
+                break;
+        }
+
+        return $this->sendRequestWithToken($url, $param, 'form-data');
+
+    }
+
+    /**
+     * 类目审核
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/audit/audit_category.html
+     * @param array $cat 类目信息
+     * @return mixed
+     */
+    public function auditCategory(array $cat)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'license' => $cat['license'] ?? [], // 营业执照或组织机构代码证，图片url
+            'category_info' => [
+                'level1' => $cat['leval1'] ?? 0, // 一级类目
+                'level2' => $cat['level2'] ?? 0, // 二级类目
+                'level3' => $cat['level3'] ?? 0, // 三级类目
+                'certificate' => $cat['certificate'] ?? [], // 资质材料，图片url
+            ],
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
+
+    }
+
+    /**
+     * 获取审核结果
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/audit/audit_result.html
+     * @param string $audit_id 审核单ID
+     * @return mixed
+     */
+    public function getAudit(string $audit_id)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [
+            'audit_id' => $audit_id ?? 0,
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
 
     }
 
@@ -459,7 +541,6 @@ class Shop extends BaseApi
             'transaction_id' => $order['transaction_id'] ?? '', // 支付订单号，action_type=1且order/add时传的pay_method_type=0时必填
             'pay_time' => $order['pay_time'] ?? '', // 支付完成时间，action_type=1时必填
         ];
-        var_export($param);
 
         return $this->sendRequestWithToken($url, $param);
 

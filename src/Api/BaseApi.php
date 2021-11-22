@@ -3,7 +3,9 @@
 
 namespace WeMiniGrade\Api;
 
-use http\Params;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class BaseApi
 {
@@ -34,7 +36,7 @@ class BaseApi
             'appid' => $this->appid,
             'secret' => $this->secret,
         );
-        $res = $this->sendHttpRequest($url, $param, '', false);
+        $res = $this->sendHttpRequest($url, $param);
         if (!isset($res['access_token'])) {
             throw new \Exception($res['errcode'] . ':' . $res['errmsg'], $res['errcode']);
         }
@@ -56,16 +58,16 @@ class BaseApi
      * 带access token 请求
      * @param $url
      * @param string $body_param
-     * @param bool $is_post
+     * @param string $content_type
      * @return array|mixed
      * @throws \Exception
      */
-    public function sendRequestWithToken($url, $body_param = '', $is_post = true)
+    public function sendRequestWithToken($url, $body_param = '', $content_type = '')
     {
         $token = [
             'access_token' => $this->getAccessToken()
         ];
-        return $this->sendHttpRequest($url, $token, $body_param, $is_post);
+        return $this->sendHttpRequest($url, $token, $body_param, $content_type);
     }
 
     /**
@@ -73,40 +75,40 @@ class BaseApi
      * @param string $url
      * @param array $url_param
      * @param array $body_param
-     * @param bool $is_post
+     * @param string $content_type
      * @return mixed
      * @throws Exception
      */
-    public function sendHttpRequest($url, $url_param = '', $body_param = '', $is_post = true)
+    public function sendHttpRequest($url, $url_param = '', $body_param = '', $content_type = '')
     {
         if ($url_param) {
-            $url_param = '?' . http_build_query($url_param);
+            $url .=  '?' . http_build_query($url_param);
         }
-        if ($body_param) {
-            $body_param = json_encode($body_param, JSON_UNESCAPED_UNICODE);
-        } else {
-            $body_param = '{}';
-        }
-        $header = array();
-        $ch = curl_init($url . $url_param);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, $header);
-        if ($is_post) {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body_param);
-        }
-        $data = curl_exec($ch);
-        curl_close($ch);
-        $array_data = json_decode($data, true);
-        if ($array_data && is_array($array_data)) {
+        try{
+            $client = new Client(['timeout' => 3.0]);
+            switch ($content_type) {
+                case 'form-data':
+                    $response = $client->request('POST', $url, [
+                        'multipart' => $body_param
+                    ]);
+                    break;
+                default:
+                    $response = $client->request('POST', $url, [
+                        'json' => $body_param
+                    ]);
+
+            }
+            $array_data = $response->getBody()->getContents();
+            $array_data = json_decode($array_data, true);
             if ((isset($array_data['errcode']) && $array_data['errcode'] == 0) || isset($array_data['access_token'])) {
                 return $array_data;
             } else {
                 throw new \Exception($array_data['errmsg'], $array_data['errcode']);
             }
-        } else {
-            throw new \Exception($array_data);
+        }catch(\Exception $ex){
+            throw $ex;
         }
+
     }
 
 
