@@ -121,7 +121,7 @@ class Shop extends BaseApi
         $param = [
             'license' => $cat['license'] ?? [], // 营业执照或组织机构代码证，图片url
             'category_info' => [
-                'level1' => $cat['leval1'] ?? 0, // 一级类目
+                'level1' => $cat['level1'] ?? 0, // 一级类目
                 'level2' => $cat['level2'] ?? 0, // 二级类目
                 'level3' => $cat['level3'] ?? 0, // 三级类目
                 'certificate' => $cat['certificate'] ?? [], // 资质材料，图片url
