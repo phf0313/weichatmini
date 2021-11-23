@@ -61,7 +61,7 @@ class Shop extends BaseApi
             $data = $this->sendRequestWithToken($url);
 
             if ($data) {
-//                WeMiniCache::set($key, $data, 80000);
+                WeMiniCache::set($key, $data, 80000);
             }
         }
 
@@ -119,13 +119,15 @@ class Shop extends BaseApi
         $url = $this->getUrl(__FUNCTION__);
 
         $param = [
-            'license' => $cat['license'] ?? [], // 营业执照或组织机构代码证，图片url
-            'category_info' => [
-                'level1' => $cat['level1'] ?? 0, // 一级类目
-                'level2' => $cat['level2'] ?? 0, // 二级类目
-                'level3' => $cat['level3'] ?? 0, // 三级类目
-                'certificate' => $cat['certificate'] ?? [], // 资质材料，图片url
-            ],
+            'audit_req' => [
+                'license' => $cat['license'] ?? [], // 营业执照或组织机构代码证，图片url
+                'category_info' => [
+                    'level1' => $cat['level1'] ?? 0, // 一级类目
+                    'level2' => $cat['level2'] ?? 0, // 二级类目
+                    'level3' => $cat['level3'] ?? 0, // 三级类目
+                    'certificate' => $cat['certificate'] ?? [], // 资质材料，图片url
+                ],
+            ]
         ];
 
         return $this->sendRequestWithToken($url, $param);
@@ -443,7 +445,7 @@ class Shop extends BaseApi
     public function getSpuStatus(): array
     {
         return [
-            0 => '初始值',
+            0 => '未审核',
             5 => '上架',
             11 => '自主下架',
             13 => '违规下架/风控系统下架',
