@@ -12,14 +12,16 @@ try {
 //        'cache_time' => 100
 //    ];
 
+    $app_id = '';
+    $app_secret = '';
     $cache_config = [
         'cache_type' => 'redis',
         'cache_time' => 100,
-        'namespace' => 'weminicache_wx55081514835ce890',
+        'namespace' => 'weminicache_'.$app_id,
         'cache_redis_host' => 'localhost'
     ];
 
-    $wechat = new WeMiniGrade('wx55081514835ce890', '21c94af8487a75d71013a157597cba32', $cache_config, ['log_path'=>dirname(__DIR__).'/tests/logs']);
+    $wechat = new WeMiniGrade($app_id, $app_secret, $cache_config, ['log_path'=>'\log\wechatmini']);
 
     // get access token
 //    $access_token = $wechat->Base()->getAccessToken(1);
@@ -94,8 +96,8 @@ try {
 
 //        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
 
-    dd($wechat->Shop()->getSpuList([], 1, 20));
-//    dd(($wechat->Shop()->onlineOfflineSpu(0, '100092')));
+//    dd($wechat->Shop()->getSpuList([], 1, 20));
+    dd(($wechat->Shop()->onlineOfflineSpu(1, '100092')));
 
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();
