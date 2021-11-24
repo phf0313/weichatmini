@@ -18,26 +18,28 @@ class Log
 
     public static function record($message = '', $type = 'debug')
     {
-        self::$handler->$type($message);
+        if(is_object(self::$handler)){
+            self::$handler->$type($message);
+        }
     }
 
     public static function debug($message = '')
     {
-        self::$handler->debug($message);
+        self::record($message, 'debug');
     }
 
     public static function info($message = '')
     {
-        self::$handler->info($message);
+        self::record($message, 'debug');
     }
 
     public static function warning($message = '')
     {
-        self::$handler->waring($message);
+        self::record($message, 'debug');
     }
 
     public static function error($message = '')
     {
-        self::$handler->error($message);
+        self::record($message, 'debug');
     }
 }

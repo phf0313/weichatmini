@@ -95,13 +95,13 @@ class BaseApi
                     break;
                 default:
                     $response = $client->request('POST', $url, [
-                        'json' => $body_param
+                        'body' => json_encode($body_param, JSON_UNESCAPED_UNICODE)
                     ]);
 
             }
             $array_data = $response->getBody()->getContents();
             $array_data = json_decode($array_data, true);
-            Log::debug('请求返回.....'.json_encode($body_param));
+            Log::debug('请求返回.....'.json_encode($array_data));
             if ((isset($array_data['errcode']) && $array_data['errcode'] == 0) || isset($array_data['access_token'])) {
                 return $array_data;
             } else {

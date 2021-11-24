@@ -27,7 +27,9 @@ class WeMiniGrade
 
         WeMiniCache::init($cache_config);
 
-        Log::init($log_config);
+        if($log_config){
+            Log::init($log_config);
+        }
     }
 
     /**
