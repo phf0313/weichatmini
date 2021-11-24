@@ -26,10 +26,13 @@ class BaseApi
      */
     public function getAccessToken(int $refresh = 0)
     {
-        $token = WeMiniCache::get($this->appid . '_token', false);
-        if ($token) {
-            return $token;
+        if(!$refresh){
+            $token = WeMiniCache::get($this->appid . '_token', false);
+            if ($token) {
+                return $token;
+            }
         }
+
         $url = ApiUrl::ACCESS_TOKEN;
         $param = array(
             'grant_type' => 'client_credential',

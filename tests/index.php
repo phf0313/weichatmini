@@ -8,7 +8,7 @@ try {
 //    $cache_config = [
 //        'cache_type' => 'file',
 //        'cache_dir' => dirname(__DIR__).'/tests/cache/',
-//        'namespace' => 'weminicache_wx55081514835ce890',
+//        'namespace' => 'weminicache_wx',
 //        'cache_time' => 100
 //    ];
 
