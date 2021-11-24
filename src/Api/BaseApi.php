@@ -85,7 +85,7 @@ class BaseApi
             $url .=  '?' . http_build_query($url_param);
         }
         try{
-            Log::debug('请求...'.$url.'...返回.....'.json_encode($body_param, JSON_UNESCAPED_UNICODE));
+            Log::debug('请求...'.$url.'...参数.....'.json_encode($body_param, JSON_UNESCAPED_UNICODE));
             $client = new Client(['timeout' => 3.0]);
             switch ($content_type) {
                 case 'form-data':
