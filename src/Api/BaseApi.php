@@ -85,7 +85,7 @@ class BaseApi
             $url .=  '?' . http_build_query($url_param);
         }
         try{
-            Log::debug('请求参数.....'.json_encode($body_param));
+            Log::debug('请求...'.$url.'...返回.....'.json_encode($body_param, JSON_UNESCAPED_UNICODE));
             $client = new Client(['timeout' => 3.0]);
             switch ($content_type) {
                 case 'form-data':
@@ -100,8 +100,8 @@ class BaseApi
 
             }
             $array_data = $response->getBody()->getContents();
+            Log::debug('请求返回.....'.$array_data);
             $array_data = json_decode($array_data, true);
-            Log::debug('请求返回.....'.json_encode($array_data));
             if ((isset($array_data['errcode']) && $array_data['errcode'] == 0) || isset($array_data['access_token'])) {
                 return $array_data;
             } else {

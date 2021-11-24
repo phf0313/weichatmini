@@ -272,11 +272,13 @@ class Shop extends BaseApi
             default:
                 throw new Exception('请选择上架还是下架');
         }
-
-        $param = [
-            'product_id' => $product_id ?? '',
-            'out_product_id' => $out_product_id ?? '',
-        ];
+        $param = [];
+        if($out_product_id){
+            $param['out_product_id'] = (string)$out_product_id;
+        }
+        if($product_id){
+            $param['product_id'] = (int)$product_id;
+        }
 
         return $this->sendRequestWithToken($url, $param);
 
@@ -445,7 +447,7 @@ class Shop extends BaseApi
     public function getSpuStatus(): array
     {
         return [
-            0 => '审核中',
+            0 => '',
             5 => '上架',
             11 => '自主下架',
             13 => '违规下架/风控系统下架',

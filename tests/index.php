@@ -92,10 +92,10 @@ try {
 //    ];
 //    dd(($wechat->Shop()->uploadImage($image)));
 
-        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
+//        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
 
-
-
+    dd($wechat->Shop()->getSpuList([], 1, 20));
+//    dd(($wechat->Shop()->onlineOfflineSpu(0, '100092')));
 
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();
