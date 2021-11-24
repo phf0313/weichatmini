@@ -1,7 +1,11 @@
 {
   "name": "phf0313/wechatmini-grade",
   "description": "微信小程序基础功能，及交易组件功能",
-  "keywords": ["wechat","miniapp","wechat app"],
+  "keywords": [
+    "wechat",
+    "miniapp",
+    "wechat app"
+  ],
   "license": "Apache-2.0",
   "authors": [
     {
@@ -9,19 +13,21 @@
       "email": "phf0313@qq.com"
     }
   ],
-
   "require": {
     "php": "^7.1",
     "symfony/cache": "^4",
-    "guzzlehttp/guzzle": "^6.5"
-  },
+    "guzzlehttp/guzzle": "^6.5",
+    "monolog/monolog": "^1"
 
+  },
   "autoload": {
     "psr-4": {
       "WeMiniGrade\\": "src/"
     }
   },
   "autoload-dev": {
-    "files": ["tests/function.php"]
+    "files": [
+      "tests/function.php"
+    ]
   }
 }

@@ -18,7 +18,8 @@ try {
         'namespace' => 'weminicache_wx55081514835ce890',
         'cache_redis_host' => 'localhost'
     ];
-    $wechat = new WeMiniGrade('wx55081514835ce890', '21c94af8487a75d71013a157597cba32', $cache_config);
+
+    $wechat = new WeMiniGrade('wx55081514835ce890', '21c94af8487a75d71013a157597cba32', $cache_config, ['log_path'=>dirname(__DIR__).'/tests/logs']);
 
     // get access token
 //    $access_token = $wechat->Base()->getAccessToken(1);
@@ -91,7 +92,7 @@ try {
 //    ];
 //    dd(($wechat->Shop()->uploadImage($image)));
 
-//        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
+        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
 
 
 

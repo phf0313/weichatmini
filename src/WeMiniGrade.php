@@ -4,6 +4,7 @@ namespace WeMiniGrade;
 
 use WeMiniGrade\Api\BaseApi;
 use WeMiniGrade\Api\CustomMsg;
+use WeMiniGrade\Api\Log;
 use WeMiniGrade\Api\QRCode;
 use WeMiniGrade\Api\SessionKey;
 use WeMiniGrade\Api\Shop;
@@ -18,13 +19,15 @@ class WeMiniGrade
     private $secret;
     private $instance;
 
-    public function __construct($appid, $secret, $cache_config = [])
+    public function __construct($appid, $secret, $cache_config = [], $log_config = [])
     {
         $this->appid = $appid;
         $this->secret = $secret;
         $this->instance = [];
 
         WeMiniCache::init($cache_config);
+
+        Log::init($log_config);
     }
 
     /**

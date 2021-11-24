@@ -445,7 +445,7 @@ class Shop extends BaseApi
     public function getSpuStatus(): array
     {
         return [
-            0 => '未审核',
+            0 => '审核中',
             5 => '上架',
             11 => '自主下架',
             13 => '违规下架/风控系统下架',
