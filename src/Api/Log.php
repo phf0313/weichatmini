@@ -11,9 +11,11 @@ class Log
 
     public static function init($config = [])
     {
-        $log_file = $config['log_path'].'/'.date('Ymd').'.log';
-        self::$handler = new Logger('wechatmini_grade');
-        self::$handler->pushHandler(new StreamHandler($log_file, Logger::DEBUG));
+        if($config){
+            $log_file = $config['log_path'].'/'.date('Ymd').'.log';
+            self::$handler = new Logger('wechatmini_grade');
+            self::$handler->pushHandler(new StreamHandler($log_file, Logger::DEBUG));
+        }
     }
 
     public static function record($message = '', $type = 'debug')

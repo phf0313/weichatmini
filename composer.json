@@ -1,6 +1,6 @@
 {
   "name": "phf0313/wechatmini-grade",
-  "description": "微信小程序基础功能，及交易组件功能",
+  "description": "微信小程序自定义交易组件接口，打通视频号和小程序店铺数据",
   "keywords": [
     "wechat",
     "miniapp",
