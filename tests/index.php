@@ -23,6 +23,10 @@ try {
 
     $wechat = new WeMiniGrade($app_id, $app_secret, $cache_config, ['log_path'=>'\log\wechatmini']);
 
+    $access_token = json_decode(file_get_contents('https://token_url'));
+
+    $wechat->Base()->setAccessToken($access_token->datas->token);
+
     // get access token
 //    $access_token = $wechat->Base()->getAccessToken(1);
 //    echo $access_token;
@@ -97,7 +101,24 @@ try {
 //        dd(($wechat->Shop()->getAudit('RQAAAKrxReUQAAAAlFqbYQ')));
 
 //    dd($wechat->Shop()->getSpuList([], 1, 20));
-    dd(($wechat->Shop()->onlineOfflineSpu(1, '100092')));
+//    dd(($wechat->Shop()->onlineOfflineSpu(1, '100092')));
+
+
+    $goods = [
+        'out_product_id' => '100092',
+        'skus' => [
+            [
+                'out_sku_id' => '100092',
+                'sale_price' => 700,
+                'market_price' => 800,
+                'stock_num' => 100,
+                'barcode' => '',
+                'sku_code' => '0600054'
+
+            ]
+        ],
+    ];
+    dd(($wechat->Shop()->updateSpuNotAudit($goods)));
 
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();

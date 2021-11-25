@@ -19,6 +19,15 @@ class BaseApi
     }
 
     /**
+     * 强制设置access token，使用从其它途径获取的access token
+     * @param $access_token
+     */
+    public function setAccessToken($access_token): void
+    {
+        WeMiniCache::set($this->appid . '_token', $access_token, 7000);
+    }
+
+    /**
      * 获取access token
      * @param int $refresh
      * @return mixed|string

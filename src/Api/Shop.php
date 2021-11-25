@@ -284,6 +284,46 @@ class Shop extends BaseApi
 
     }
 
+    /**
+     * 免审核更新商品
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/SPU/update_spu_without_audit.html
+     * @param array $goods 商品信息
+     * @return mixed
+     */
+    public function updateSpuNotAudit(array $goods)
+    {
+        $url = $this->getUrl(__FUNCTION__);
+
+        $param = [];
+        if(isset($goods['out_product_id'])){
+            $param['out_product_id'] = (string)$goods['out_product_id'];
+        }
+        if(isset($goods['product_id'])){
+            $param['out_product_id'] = (int)$goods['product_id'];
+        }
+        if(isset($goods['path'])){
+            $param['path'] = $goods['path'];
+        }
+        if(isset($goods['skus'])){
+            $param['skus'] = [];
+            foreach($goods['skus'] as $sku){
+                $tmp_sku = [
+                    'out_sku_id' => $sku['out_sku_id'],
+                    'sale_price' => $sku['sale_price'],
+                    'market_price' => $sku['market_price'],
+                    'stock_num' => $sku['stock_num'],
+                    'barcode' => $sku['barcode'],
+                    'sku_code' => $sku['sku_code'],
+                ];
+                $param['skus'][] = $tmp_sku;
+            }
+        }
+
+        return $this->sendRequestWithToken($url, $param);
+
+    }
+
+
 
     /**
      * 获取商品列表
