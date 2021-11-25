@@ -120,6 +120,7 @@ try {
     ];
     dd(($wechat->Shop()->updateSpuNotAudit($goods)));
 
+
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();
 }
