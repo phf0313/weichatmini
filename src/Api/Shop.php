@@ -612,7 +612,8 @@ class Shop extends BaseApi
     }
 
     /**
-     * 获取订单
+     * 获取订单列表
+     * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/order/get_order_list.html
      * @param int $page
      * @param int $page_size
      * @param string $sort_order
@@ -631,6 +632,23 @@ class Shop extends BaseApi
         ];
 
         return $this->sendRequestWithToken($url, $param);
+    }
+
+    /**
+     * 获取订单状态列表
+     * @return string[]
+     */
+    public function getOrderStatus()
+    {
+        return [
+            10=>'代付款',
+            11=>'收银台支付完成',
+            20=>'待发货',
+            30=>'待收货',
+            100=>'完成',
+            200=>'全部商品售后之后，订单取消',
+            250=>'用户主动取消/待付款超时取消/商家取消',
+        ];
     }
 
     /**
