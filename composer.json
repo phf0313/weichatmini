@@ -29,5 +29,10 @@
     "files": [
       "tests/function.php"
     ]
+  },
+  "config": {
+    "platform": {
+      "php": "7.1.29"
+    }
   }
 }

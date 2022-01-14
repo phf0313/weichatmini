@@ -75,6 +75,7 @@ class ApiUrl{
         'getOrder' => 'order/get', // 获取订单详情
         'getFinderOrderList' => 'order/get_list_by_finder', // 按照推广员获取订单
         'getSharerOrderList' => 'order/get_list_by_sharer', // 按照分享员获取订单
+        'getAllOrderList' => 'order/get_list', // 获取所有订单，分页
 
         // 物流
         'getDeliveryCompanyList' => 'delivery/get_company_list', // 获取快递公司列表

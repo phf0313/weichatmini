@@ -14,7 +14,6 @@ try {
     ];
     $wechat = new WeMiniGrade('wx55081514835ce890', '21c94af8487a75d71013a157597cba32', $cache_config);
 
-
     $order = [
         'create_time' => $order['create_time'] ?? '2021-11-10 11:38:01', //创建时间
         'out_order_id' => $order['out_order_id'] ?? '14256327878', //商家自定义订单ID
@@ -62,7 +61,6 @@ try {
 
 //    dd($wechat->Shop()->addOrder($order));
 
-
     $wechat_order = [
         'order_id' => '2129420644017553409',
         'out_order_id' => '14256327878',
@@ -77,7 +75,6 @@ try {
     ];
 
 //    dd($wechat->Shop()->payOrder($wechat_order));
-
 
 //    print_r($wechat->Shop()->getOrder('14256327878', 'oqvFF5UH35S0-aUZSQyKR0WZqmis'));
 
@@ -116,8 +113,12 @@ try {
     ];
 //    dd($wechat->Shop()->addAftersale($aftersale));
 
-    dd($wechat->Shop()->getSpuList([], 1, 20));
+//    dd($wechat->Shop()->getSpuList([], 1, 20));
 
+
+//    dd($wechat->Shop()->getAllOrderList());
+
+//    dd($wechat->Shop()->getOrder('r13957335653'));
 
 } catch (\Exception $ex) {
     echo $ex->getCode() . '...' . $ex->getMessage();

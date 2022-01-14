@@ -612,6 +612,28 @@ class Shop extends BaseApi
     }
 
     /**
+     * 获取订单
+     * @param int $page
+     * @param int $page_size
+     * @param string $sort_order
+     * @param string $start_create_time
+     * @param string $end_create_time
+     */
+    public function getAllOrderList($page=1, $page_size=20, $sort_order = 'desc', $start_create_time = '', $end_create_time = '')
+    {
+        $url = $this->getUrl(__FUNCTION__);
+        $param = [
+            'page' => $page,
+            'page_size' => $page_size,
+            'sort_order' => $sort_order,
+            'start_create_time' => $start_create_time,
+            'end_create_time' => $end_create_time,
+        ];
+
+        return $this->sendRequestWithToken($url, $param);
+    }
+
+    /**
      * 获取快递公司列表
      * @link https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/ministore/minishopopencomponent2/API/delivery/get_company_list.html
      * @return mixed
