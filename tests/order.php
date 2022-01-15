@@ -116,7 +116,7 @@ try {
 //    dd($wechat->Shop()->getSpuList([], 1, 20));
 
 
-//    dd($wechat->Shop()->getAllOrderList());
+    dd($wechat->Shop()->getAllOrderList());
 
 //    dd($wechat->Shop()->getOrder('r13957335653'));
 
