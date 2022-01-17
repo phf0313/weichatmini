@@ -620,7 +620,7 @@ class Shop extends BaseApi
      * @param string $start_create_time
      * @param string $end_create_time
      */
-    public function getAllOrderList($page=1, $page_size=20, $sort_order = 'desc', $start_create_time = '', $end_create_time = '')
+    public function getAllOrderList($page=1, $page_size=20, $sort_order = 1, $start_create_time = '', $end_create_time = '')
     {
         $url = $this->getUrl(__FUNCTION__);
         $param = [
