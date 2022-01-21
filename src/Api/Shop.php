@@ -311,6 +311,7 @@ class Shop extends BaseApi
                     'out_sku_id' => $sku['out_sku_id'],
                     'sale_price' => $sku['sale_price'],
                     'market_price' => $sku['market_price'],
+                    'stock_num' => $sku['stock_num']
                 ];
                 if(isset($sku['sku_code'])){
                     $tmp_sku['sku_code'] = $sku['sku_code'];
